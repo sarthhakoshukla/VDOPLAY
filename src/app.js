@@ -20,9 +20,25 @@ app.use(express.static("public"))
 app.use(cookieParser())
 // Parses cookies from incoming requests and attaches to req.cookies
 
-//routes
+//routes imports
+
 import userRouter from './routes/user.routes.js'
+//mann chah naam tabhi de skte jab export default hora ho
+//exported router get assigned userRouter variable and value is alloted dynamically on import time for once
+
+
+
 
 //router declaration
-app.use("/users",userRouter)
+
+// app.use("/users",userRouter)
+//general practice is :
+app.use("/api/v1/users",userRouter)
+// This means all user-related routes will start with /api/v1/users.  ->go to user.routes.js
+
+
+
+//http://localhost:5000/users/register
+
+
 export { app }

@@ -7,7 +7,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 // It catches errors in async functions and passes them to Express error handler.
 
 const registerUser = asyncHandler(async (req, res) => {
-
+console.log("dsfghjhgfdfghgfd");
      //1 get user details
     const {fullName,email,username,password}=req.body
     console.log("email:",email);
@@ -21,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     //3 check if user exist or not? email / username or use both
-    const existedUser=User.findOne({
+    const existedUser=await User.findOne({
         $or:[{ username },{ email }]
     })
     if(existedUser){
@@ -29,9 +29,9 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     //4 check for images, check for avatar
-    const avatarLocal=req.field?.avatar[0]?.path
+    const avatarLocal = req.files?.avatar?.[0]?.path
                        //because req.files.avatar is an array, aur hum us array ka first file (index 0) access kar rahe hain.
-    const coverLocal=req.field?.coverImage[0]?.path
+    const coverLocal=req.files?.coverImage?.[0]?.path
     if(!avatarLocal){
         throw new ApiError(400,"Avatar file is required");
     }
@@ -48,7 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
         const user = await User.create({ //as this process will take time
         fullName,
         avatar: avatar.url,
-        coverImage: coverImage?.url || "",
+        coverImage: cover?.url || "",
         email,
         password,
         username: username.toLowerCase()
